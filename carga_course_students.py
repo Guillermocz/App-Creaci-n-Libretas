@@ -31,8 +31,10 @@ def cargar_cursos(csv_file_path):
 
 # Función para cargar estudiantes desde el CSV
 def cargar_estudiantes(csv_file_path):
-    with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
+    with open(csv_file_path, newline='', encoding='utf-8-sig') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=';')  # Si los campos están delimitados por punto y coma
+        print(f"Encabezados del CSV: {reader.fieldnames}")
+        
         for row in reader:
             nombre_completo = row['nombre_completo']
             id_canvas = row['id_canvas']
