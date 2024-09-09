@@ -16,11 +16,28 @@ class ReportCard(models.Model):
 class Grade(models.Model):
     report_card = models.ForeignKey(ReportCard, related_name='grades', on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    grade = models.DecimalField(max_digits=5, decimal_places=2)
-    comments = models.TextField(blank=True, null=True)
+
+    # Campos para el 1er parcial
+    tai_1parcial = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="TAI 1er Parcial", default=0)
+    aic_1parcial = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="AIC 1er Parcial", default=0)
+    agc_1parcial = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="AGC 1er Parcial", default=0)
+    lec_1parcial = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="LEC 1er Parcial", default=0)
+    eva_1parcial = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="EVA 1er Parcial", default=0)
+    
+    # Promedio del 1er parcial
+    promedio_1parcial = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, verbose_name="Promedio 1er Parcial")
+
+    # Método para calcular el promedio del 1er parcial
+    def calcular_promedio_1parcial(self):
+        return (self.tai_1parcial + self.aic_1parcial + self.agc_1parcial + self.lec_1parcial + self.eva_1parcial) / 5
+
+    # Sobrescribir el método save para calcular el promedio automáticamente al guardar
+    def save(self, *args, **kwargs):
+        self.promedio_1parcial = self.calcular_promedio_1parcial()
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Nota de {self.subject} para {self.report_card.student}"
+        return f"Notas de {self.subject} para {self.report_card.student}"
     
 
 # Create your models here. 
@@ -37,4 +54,4 @@ class Grade(models.Model):
 # El campo grade es un número decimal que almacena la calificación (hasta dos decimales).
 # También se puede agregar un campo comments para agregar observaciones o comentarios sobre la nota.
 
-  # Esto asume que ya tienes un modelo de Subject en la app de subjects
+# Esto asume que ya tienes un modelo de Subject en la app de subjects
