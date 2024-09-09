@@ -1,0 +1,35 @@
+<!-- students/templates/students/estudiantes_por_curso.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudiantes por curso</title>
+</head>
+<body>
+    <h1>Estudiantes por curso</h1>
+    
+    {% for curso_data in datos_cursos %}
+        <h2>{{ curso_data.curso.nombre_de_curso }}</h2>
+        
+        <h3>Estudiantes:</h3>
+        <ul>
+            {% for estudiante in curso_data.estudiantes %}
+                <li>{{ estudiante.nombre_completo }} (ID: {{ estudiante.id_canvas }})</li>
+            {% empty %}
+                <li>No hay estudiantes en este curso.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Materias asignadas:</h3>
+        <ul>
+            {% for materia in curso_data.materias %}
+                <li>{{ materia.nombre }}</li>
+            {% empty %}
+                <li>No hay materias asignadas a este curso.</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>
